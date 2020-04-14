@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <conio.h>
 
 // male vector
@@ -40,9 +41,9 @@ int main() {
 	// get male names
 	err = fopen_s(&pMale, "males.dat", "w");
 	if (pMale == NULL)
-		printf("\nFile cannot be opened\n");
+		goto ErrorHandler;
 	else
-		for (x = 0; x < 3; x++) {
+		for (x = 0; x < 5; x++) {
 			printf("\nPlease enter the name of the male\n");
 			scanf_s("%s", m1.name, 10);
 			fprintf(pMale, "%s\n", m1.name);
@@ -53,9 +54,9 @@ int main() {
 	err = fopen_s(&pFemale, "females.dat", "w");
 	system("cls");
 	if (pFemale == NULL)
-		printf("\nFile cannot be opened\n");
+		goto ErrorHandler;
 	else
-		for (x = 0; x < 3; x++) {
+		for (x = 0; x < 5; x++) {
 			printf("\nPlease enter the name of the female\n");
 			scanf_s("%s", f1.name, 10);
 			fprintf(pFemale, "%s\n", f1.name);
@@ -65,7 +66,11 @@ int main() {
 	// call the function
 	generateAllCouples(m1, f1);
 
-	return 0;
+	exit(EXIT_SUCCESS); // exit program normally
+
+	ErrorHandler: perror("The following error occured");
+	exit(EXIT_FAILURE); // exit program with error
+
 } // end main
 
 void generateAllCouples(struct male m1, struct female f1) {
@@ -82,6 +87,7 @@ void generateAllCouples(struct male m1, struct female f1) {
 	fclose(pCouples);
 	err = fopen_s(&pCouples, "couples.dat", "r");
 	system("cls");
+	printf("The cross product of male and female names are: \n");
 	while (fscanf_s(pCouples, "%s %s", c1.mname, 10, c1.fname, 10) != EOF) {
 		printf("%s\t%s\n", c1.mname, c1.fname);
 	} // end loop
